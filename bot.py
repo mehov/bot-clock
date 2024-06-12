@@ -19,7 +19,7 @@ class Bot:
         return f"/tmp/bot{key}.flag"
 
     def run(self):
-        stop_time = time.time() + (self.uptime * 60)
+        stop_time = time.time() + (int(self.uptime) * 60)
         while time.time() < stop_time:
             current_time = datetime.datetime.now().strftime('%Y%m%d-%H%M')
             flag_file = self.get_flag(current_time)
