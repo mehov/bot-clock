@@ -1,11 +1,15 @@
+import logging
 import os
 import socketserver
+import sys
 from src.Bot import Bot
 from src.Http import Http
 
-print(f"Starting {__file__}. The environment is:")
+
+logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
+logging.info(f"Starting {__file__}. The environment is:")
 for key, value in os.environ.items():
-    print(f"    {key} = {value}")
+    logging.info(f"    {key} = {value}")
 
 notifier = Bot()
 notifier.run()
