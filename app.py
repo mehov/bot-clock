@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import threading
 from src.Bot import Bot
 from src.Http import Http
 
@@ -12,7 +13,8 @@ for key, value in os.environ.items():
 
 # Start the HTTP listener
 http = Http()
-http.run()
+http_thread = threading.Thread(target=http.run, daemon=True)
+http_thread.start()
 
 # Start the bot
 notifier = Bot()
