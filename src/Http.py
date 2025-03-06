@@ -1,15 +1,15 @@
 import http.server
 import logging
 import os
-import socketserver
+from wsgiref.simple_server import make_server
 
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/plain")
-        self.end_headers()
-        self.wfile.write(b"Hello world!")
+class Handler:
+    def run(environ, start_response):
+        status = "200 OK"
+        headers = [("Content-type", "text/plain; charset=utf-8")]
+        start_response(status, headers)
+        return [b"Hello world!"]
 
 
 class Http:
@@ -19,6 +19,6 @@ class Http:
         HTTP_PORT = int(os.getenv("HTTP_PORT"))
         HTTP_HOST = os.getenv("HTTP_HOST", "0.0.0.0")
         logging.info(f"Configured to serve on {HTTP_HOST}:{HTTP_PORT}")
-        with socketserver.TCPServer((HTTP_HOST, HTTP_PORT), Handler) as httpd:
+        with make_server(HTTP_HOST, HTTP_PORT, Handler.run) as server:
             logging.info(f"Serving on {HTTP_HOST}:{HTTP_PORT}")
-            httpd.serve_forever()
+            server.serve_forever()
