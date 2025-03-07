@@ -7,5 +7,5 @@ from src.Bot import Bot
 
 # app.run() # no need for this as Azure has a separate launcher
 
-bot=Bot()
-bot.run()
+#bot=Bot()
+#bot.run()
