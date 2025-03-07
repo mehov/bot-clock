@@ -18,21 +18,27 @@ class Bot:
     def get_flag(self, key):
         return f"/tmp/bot{key}.flag"
 
-    async def run(self):
+    def run(self):
         print("bot.run")
-        #stop_time = time.time() + (int(self.uptime) * 60)
-        #while time.time() < stop_time:
+        # stop_time = time.time() + (int(self.uptime) * 60)
+        # while time.time() < stop_time:
         while True:
             current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            #flag_file = self.get_flag(current_time)
-            #if os.path.exists(flag_file):
+            # flag_file = self.get_flag(current_time)
+            # if os.path.exists(flag_file):
             #    continue
-            await self.send_notification(current_time)
-            await asyncio.sleep(self.uptime)
+            self.send_notification(current_time)
+            time.sleep(int(self.uptime))
 
-    async def send_notification(self, current_time):
-        #flag_file = self.get_flag(current_time)
-        message = f"It's {current_time} o'clock!\n"
-        await self.telegram_bot.send_message(chat_id=self.chat_id, text=message)
-        #with open(flag_file, 'w'):
+    def send_notification(self, current_time):
+        # flag_file = self.get_flag(current_time)
+        message = f"It's {current_time} o'clock!\n\nFrom " + __file__
+
+        async def send_message():
+            await self.telegram_bot.send_message(chat_id=self.chat_id, text=message)
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(send_message())
+        # with open(flag_file, 'w'):
         #    pass
