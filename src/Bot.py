@@ -23,15 +23,15 @@ class Bot:
         #while time.time() < stop_time:
         while True:
             current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            flag_file = self.get_flag(current_time)
-            if os.path.exists(flag_file):
-                continue
+            #flag_file = self.get_flag(current_time)
+            #if os.path.exists(flag_file):
+            #    continue
             self.send_notification(current_time)
-            time.sleep(self.uptime)
+            time.sleep(60)
 
     def send_notification(self, current_time):
-        flag_file = self.get_flag(current_time)
+        #flag_file = self.get_flag(current_time)
         message = f"It's {current_time} o'clock!\n"
         asyncio.run(self.telegram_bot.send_message(chat_id=self.chat_id, text=message))
-        with open(flag_file, 'w'):
-            pass
+        #with open(flag_file, 'w'):
+        #    pass
