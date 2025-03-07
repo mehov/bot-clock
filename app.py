@@ -1,16 +1,39 @@
-import datetime
-import time
 import threading
 from flask import Flask
 import logging
 import sys
+import asyncio
+import datetime
 import os
-from src.Bot import Bot
+import telegram
+import time
+
 
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
-logging.info(f"Starting {__file__}. The environment is:")
-for key, value in os.environ.items():
-    logging.info(f"    {key} = {value}")
+
+
+class Bot:
+    def __init__(self):
+        self.bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+        self.chat_id = os.getenv('TELEGRAM_CHAT_ID')
+        self.telegram_bot = telegram.Bot(token=self.bot_token)
+        self.uptime = os.getenv('BOT_UPTIME')
+
+    def run(self):
+        while True:
+            current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            message = f"It's {current_time} o'clock!\n\nSent from " + __file__
+            self.send_notification(message)
+            time.sleep(int(self.uptime))
+
+    def send_notification(self, message):
+
+        async def send_message():
+            await self.telegram_bot.send_message(chat_id=self.chat_id, text=message)
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(send_message())
 
 
 bot = Bot()
@@ -20,7 +43,7 @@ app = Flask(__name__)
 # Simple endpoint that responds to Azure ping
 @app.route('/')
 def home():
-    return "Azure is keeping me alive!", 200
+    return "Hello World!", 200
 
 
 # Run the bot in a separate thread
