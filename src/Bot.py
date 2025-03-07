@@ -19,15 +19,15 @@ class Bot:
         return f"/tmp/bot{key}.flag"
 
     def run(self):
-        stop_time = time.time() + (int(self.uptime) * 60)
-        while time.time() < stop_time:
+        #stop_time = time.time() + (int(self.uptime) * 60)
+        #while time.time() < stop_time:
+        while True:
             current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             flag_file = self.get_flag(current_time)
             if os.path.exists(flag_file):
                 continue
             self.send_notification(current_time)
-            time.sleep(1)
-        self.send_notification("Stop time reached")
+            time.sleep(self.uptime)
 
     def send_notification(self, current_time):
         flag_file = self.get_flag(current_time)
