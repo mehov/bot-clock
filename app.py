@@ -10,6 +10,14 @@ from src.Bot import Bot
 # app.run() # no need for this as Azure has a separate launcher
 
 bot = Bot()
-threading.Thread(target=lambda: asyncio.run(bot.run()), daemon=True).start()
+
+
+def start_bot():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(bot.run())
+
+
+threading.Thread(target=start_bot, daemon=True).start()
 
 app.run()
