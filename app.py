@@ -1,21 +1,31 @@
-import logging
 import os
-import sys
-import threading
-from src.Bot import Bot
-from src.Http import Http
+
+from flask import (Flask, redirect, render_template, request,
+                   send_from_directory, url_for, jsonify)
+
+app = Flask(__name__)
 
 
-logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
-logging.info(f"Starting {__file__}. The environment is:")
-for key, value in os.environ.items():
-    logging.info(f"    {key} = {value}")
+@app.route('/')
+def index():
+    print('Request for index page received')
+    return jsonify(
+        hello='world',
+        foo='bar'
+    )
 
-# Start the HTTP listener
-http = Http()
-http_thread = threading.Thread(target=http.run, daemon=True)
-http_thread.start()
 
-# Start the bot
-notifier = Bot()
-notifier.run()
+@app.route('/hello', methods=['POST'])
+def hello():
+    name = request.form.get('name')
+
+    if name:
+        print('Request for hello page received with name=%s' % name)
+        return render_template('hello.html', name=name)
+    else:
+        print('Request for hello page received with no name or blank name -- redirecting')
+        return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run()

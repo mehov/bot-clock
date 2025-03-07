@@ -35,4 +35,5 @@ Here's a good guide: https://gist.github.com/nafiesl/4ad622f344cd1dc3bb1ecbe468f
 
 Tested with:
 
-- [render.com](https://render.com) (free tier)
+- [Render.com](https://render.com) (free tier)
+- [Azure App Services](https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.Web%2Fsites) (free tier)
