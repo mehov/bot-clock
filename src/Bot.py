@@ -26,12 +26,12 @@ class Bot:
             #flag_file = self.get_flag(current_time)
             #if os.path.exists(flag_file):
             #    continue
-            self.send_notification(current_time)
+            asyncio.create_task(self.send_notification(current_time))
             time.sleep(60)
 
-    def send_notification(self, current_time):
+    async def send_notification(self, current_time):
         #flag_file = self.get_flag(current_time)
         message = f"It's {current_time} o'clock!\n"
-        asyncio.run(self.telegram_bot.send_message(chat_id=self.chat_id, text=message))
+        await self.telegram_bot.send_message(chat_id=self.chat_id, text=message)
         #with open(flag_file, 'w'):
         #    pass
