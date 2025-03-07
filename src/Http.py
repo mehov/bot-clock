@@ -1,6 +1,7 @@
 import logging
 import os
 from wsgiref.simple_server import make_server
+from datetime import datetime
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for, jsonify)
 
@@ -12,7 +13,7 @@ def index():
     print('Request for index page received')
     return jsonify(
         hello='world',
-        foo='bar'
+        now=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     )
 
 
