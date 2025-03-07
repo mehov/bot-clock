@@ -28,7 +28,7 @@ class Bot:
             #if os.path.exists(flag_file):
             #    continue
             await self.send_notification(current_time)
-            await asyncio.sleep(60)
+            await asyncio.sleep(self.uptime)
 
     async def send_notification(self, current_time):
         #flag_file = self.get_flag(current_time)
