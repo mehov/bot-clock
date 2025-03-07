@@ -1,23 +1,28 @@
 import logging
 import os
 from wsgiref.simple_server import make_server
+from flask import (Flask, redirect, render_template, request,
+                   send_from_directory, url_for, jsonify)
+
+http = Flask(__name__)
 
 
-class Handler:
-    def run(environ, start_response):
-        status = "200 OK"
-        headers = [("Content-type", "text/plain; charset=utf-8")]
-        start_response(status, headers)
-        return [b"Hello world!"]
+@http.route('/')
+def index():
+    print('Request for index page received')
+    return jsonify(
+        hello='world',
+        foo='bar'
+    )
 
 
-class Http:
-    def run(self):
-        if os.getenv("HTTP_PORT") is None:
-            return
-        HTTP_PORT = int(os.getenv("HTTP_PORT"))
-        HTTP_HOST = os.getenv("HTTP_HOST", "0.0.0.0")
-        logging.info(f"Configured to serve on {HTTP_HOST}:{HTTP_PORT}")
-        with make_server(HTTP_HOST, HTTP_PORT, Handler.run) as server:
-            logging.info(f"Serving on {HTTP_HOST}:{HTTP_PORT}")
-            server.serve_forever()
+@http.route('/hello', methods=['POST'])
+def hello():
+    name = request.form.get('name')
+
+    if name:
+        print('Request for hello page received with name=%s' % name)
+        return render_template('hello.html', name=name)
+    else:
+        print('Request for hello page received with no name or blank name -- redirecting')
+        return redirect(url_for('index'))
