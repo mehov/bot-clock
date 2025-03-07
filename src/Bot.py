@@ -21,7 +21,7 @@ class Bot:
     def run(self):
         stop_time = time.time() + (int(self.uptime) * 60)
         while time.time() < stop_time:
-            current_time = datetime.datetime.now().strftime('%Y%m%d-%H%M')
+            current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             flag_file = self.get_flag(current_time)
             if os.path.exists(flag_file):
                 continue
