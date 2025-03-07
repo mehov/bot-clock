@@ -19,6 +19,7 @@ class Bot:
         return f"/tmp/bot{key}.flag"
 
     async def run(self):
+        print("bot.run")
         #stop_time = time.time() + (int(self.uptime) * 60)
         #while time.time() < stop_time:
         while True:
