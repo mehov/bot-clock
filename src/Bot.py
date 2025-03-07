@@ -27,6 +27,7 @@ class Bot:
                 continue
             self.send_notification(current_time)
             time.sleep(1)
+        self.send_notification("Stop time reached")
 
     def send_notification(self, current_time):
         flag_file = self.get_flag(current_time)
