@@ -1,5 +1,5 @@
 import threading
-from flask import Flask
+from flask import Flask, jsonify
 import logging
 import sys
 import asyncio
@@ -43,7 +43,10 @@ app = Flask(__name__)
 # Simple endpoint that responds to Azure ping
 @app.route('/')
 def home():
-    return "Hello World!", 200
+    return jsonify(
+        hello='world',
+        now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ), 200
 
 
 # Run the bot in a separate thread
