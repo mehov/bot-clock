@@ -1,3 +1,4 @@
+import asyncio
 import os
 import threading
 from src.Http import http as app
@@ -9,4 +10,6 @@ from src.Bot import Bot
 # app.run() # no need for this as Azure has a separate launcher
 
 bot = Bot()
-threading.Thread(target=bot.run, daemon=True).start()
+threading.Thread(target=lambda: asyncio.run(bot.run()), daemon=True).start()
+
+app.run()

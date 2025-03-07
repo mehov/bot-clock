@@ -18,7 +18,7 @@ class Bot:
     def get_flag(self, key):
         return f"/tmp/bot{key}.flag"
 
-    def run(self):
+    async def run(self):
         #stop_time = time.time() + (int(self.uptime) * 60)
         #while time.time() < stop_time:
         while True:
@@ -26,8 +26,8 @@ class Bot:
             #flag_file = self.get_flag(current_time)
             #if os.path.exists(flag_file):
             #    continue
-            asyncio.create_task(self.send_notification(current_time))
-            time.sleep(60)
+            await self.send_notification(current_time)
+            await asyncio.sleep(60)
 
     async def send_notification(self, current_time):
         #flag_file = self.get_flag(current_time)
