@@ -1,6 +1,6 @@
 ## bot-clock
 
-Simple Telegram bot that sends you a message with the current time at a given interval.
+Simple Telegram bot that sends you a message with the current time.
 
 Use it to test setting up bots that work in the background in a cloud / app service environment.
 
@@ -28,10 +28,15 @@ Here's a good guide: https://gist.github.com/nafiesl/4ad622f344cd1dc3bb1ecbe468f
 
 1. In your cloud dashboard, create a new project using this Github repository. Fork it if you have to.
 2. Open the newly created project and go to Environment settings. Set the following variables:
-    - `BOT_UPTIME`: `60` (sends a message every minute; can be any number in seconds)
     - `TELEGRAM_BOT_TOKEN`: the above token
     - `TELEGRAM_CHAT_ID`: the above chat ID
-3. Deploy the bot. You will start getting a message with the current time every {`BOT_UPTIME`} seconds.
+    - `HTTP_PORT`: port to bind Flask app to; defaults to `80`
+    - `HTTP_IP`: IP to bind Flask app to; defaults to `0.0.0.0`
+3. Set up CRON to trigger the bot. Go to *Startup Command* and set `sh setup.sh {hostname}`, where `{hostname}` is assigned to your project by the cloud environment. For example:
+    - `example.onrender.com`
+    - `example.azurewebsites.net`
+   If you can't set the *Startup Command* where you're deploying your bot, log on to the SSH terminal and run the `setup.sh` script manually.
+4. Deploy the bot. It will be triggered by an incoming HTTP request every 10 minutes. This will send you a message with the current time and keep the app alive.
 
 Tested with:
 
