@@ -10,7 +10,6 @@ logging.info(f"Starting {__file__}. The environment is:")
 for key, value in os.environ.items():
     logging.info(f"    {key} = {value}")
 
-
 app = Flask(__name__)
 bot = Bot()
 
@@ -25,9 +24,15 @@ def home():
 
 @app.route('/keepalive')
 def keepalive():
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    message = f"It's {current_time} o'clock!\n\nSent from " + __file__
-    bot.send_message(message)
+    def get_flag(flag_key):
+        return f"/tmp/bot-clock-{flag_key}.flag"
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    flag_file = get_flag(current_time)
+    if os.path.exists(flag_file) is not True:
+        with open(flag_file, 'w'):
+            pass
+        message = f"It's {current_time} o'clock!\n\nSent from " + __file__
+        bot.send_message(message)
     return jsonify(
         route='keepalive',
         now=current_time
