@@ -35,4 +35,6 @@ def keepalive():
 
 
 if __name__ == '__main__':
-    app.run(host=os.getenv("HTTP_IP", "0.0.0.0"), port=int(os.getenv("HTTP_PORT", 80)))
+    http_port = os.getenv("HTTP_PORT")
+    if http_port is not None:
+        app.run(host=os.getenv("HTTP_IP", "0.0.0.0"), port=int(http_port))
