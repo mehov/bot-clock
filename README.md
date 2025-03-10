@@ -26,18 +26,23 @@ Here's a good guide: https://gist.github.com/nafiesl/4ad622f344cd1dc3bb1ecbe468f
 
 ## Deploying the code
 
-1. In your cloud dashboard, create a new project using this Github repository. Fork it if you have to.
+1. In your cloud dashboard, create a new Web App project using this Github repository. Fork it if you have to.
 2. Open the newly created project and go to Environment settings. Set the following variables:
     - `TELEGRAM_BOT_TOKEN`: the above token
     - `TELEGRAM_CHAT_ID`: the above chat ID
-    - `HTTP_PORT`: port to bind Flask app to; defaults to `80`
-    - `HTTP_IP`: IP to bind Flask app to; defaults to `0.0.0.0`
-3. Set up CRON to trigger the bot. Go to *Startup Command* and set `sh setup.sh {hostname}`, where `{hostname}` is assigned to your project by the cloud environment. For example:
-    - `example.onrender.com`
-    - `example.azurewebsites.net`
-   If you can't set the *Startup Command* where you're deploying your bot, log on to the SSH terminal and run the `setup.sh` script manually.
-4. Deploy the bot. It will be triggered by an incoming HTTP request every 10 minutes. This will send you a message with the current time and keep the app alive.
+3. Using `setup.sh`, set up CRON to trigger the bot.
+    - **Azure**. *Settings* → *Configuration* → *General Settings*. *Startup Command*:
+        
+          chmod +x $PWD/setup.sh && $PWD/setup.sh "$WEBSITE_HOSTNAME" && gunicorn --bind=$HOST:$PORT app:app
+    
+    - **Render.com**. (Won't work because of `/etc/cron.d` permissions.) *Settings* → *Build & Deploy*. *Start Command*:
+    
+          chmod +x $PWD/setup.sh && $PWD/setup.sh "$RENDER_EXTERNAL_HOSTNAME" && python3 app.py
+    
+    If you can't set the *Startup Command* where you're deploying your bot, log on to the SSH terminal and run the `setup.sh` script manually.
+4. Deploy the bot. The cron will trigger it by HTTP every 10 minutes. This will send you a message with the current time and keep the app alive.
 
 Tested with:
 
-- [render.com](https://render.com) (free tier)
+- [Microsoft Azure](https://azure.microsoft.com/en-us/pricing/free-services/) (free tier)
+- [Render.com](https://render.com) (free tier) - works, but needs to be triggered. The app itself won't have access to CRON. And creating a separate *Cron Job* project is a paid service.
