@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 import logging
 import os
 import sys
@@ -25,7 +26,9 @@ def home():
 @app.route('/keepalive')
 def keepalive():
     def get_flag(flag_key):
+        flag_key = hashlib.md5(flag_key.encode()).hexdigest()
         return f"/tmp/bot-clock-{flag_key}.flag"
+
     current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     flag_file = get_flag(current_time)
     if os.path.exists(flag_file) is not True:
