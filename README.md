@@ -42,7 +42,24 @@ Here's a good guide: https://gist.github.com/nafiesl/4ad622f344cd1dc3bb1ecbe468f
     If you can't set the *Startup Command* where you're deploying your bot, log on to the SSH terminal and run the `setup.sh` script manually.
 4. Deploy the bot. The cron will trigger it by HTTP every 10 minutes. This will send you a message with the current time and keep the app alive.
 
-Tested with:
+## Automatic deployment
+
+If you forked this repository wanting to make some further changes, and you want them to be deployed to Azure automatically on each commit, you will have to set up a webhook in your repo settings.
+
+1. Get the secrets from Azure. Go to *Deployment* → *Deployment Center* → *Manage Publish Profile*. In the pop-up click *Download publish profile*. In the XML file that downloads, in the entry where it says *profileName*="Web Deploy" and *publishMethod*="MSDeploy", you're looking for the following values:
+   - **publishUrl**: `{your-app}.scm.azurewebsites.net:443`
+   - **userName**: `${your-app}`, `$` is important
+   - **userPWD**: `{BigRandomPassword}`
+2. Go to `https://github.com/{you}/{repo}/settings/hooks` and create a new webhook that looks like this:
+    
+       https://{userName}:{userPWD}@{publishUrl}/deploy
+    
+    More info:
+    - https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=others%2Cappservice#configure-the-deployment-source
+    - https://github.com/projectkudu/kudu/wiki/Continuous-deployment#setting-up-continuous-deployment-using-manual-steps
+
+   
+## Tested with:
 
 - [Microsoft Azure](https://azure.microsoft.com/en-us/pricing/free-services/) (free tier)
 - [Render.com](https://render.com) (free tier) - works, but needs to be triggered. The app itself won't have access to CRON. And creating a separate *Cron Job* project is a paid service.
