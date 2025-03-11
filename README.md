@@ -30,6 +30,7 @@ Here's a good guide: https://gist.github.com/nafiesl/4ad622f344cd1dc3bb1ecbe468f
 2. Open the newly created project and go to Environment settings. Set the following variables:
     - `TELEGRAM_BOT_TOKEN`: the above token
     - `TELEGRAM_CHAT_ID`: the above chat ID
+    - (optional) `HTTP_HOSTNAME`: domain name where code is hosted; if set, Telegram webhook is established
 3. Using `setup.sh`, set up CRON to trigger the bot.
     - **Azure**. *Settings* → *Configuration* → *General Settings*. *Startup Command*:
         

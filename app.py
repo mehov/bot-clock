@@ -3,7 +3,7 @@ import hashlib
 import logging
 import os
 import sys
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from src.Bot import Bot
 
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
@@ -39,6 +39,16 @@ def keepalive():
     return jsonify(
         route='keepalive',
         now=current_time
+    ), 200
+
+
+@app.route('/webhook-endpoint', methods=['POST'])
+def webhook_endpoint():
+    bot.send_message(request.data.decode('utf-8'))
+    return jsonify(
+        route='webhook-endpoint',
+        data=request.data.decode('utf-8'),
+        now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     ), 200
 
 
