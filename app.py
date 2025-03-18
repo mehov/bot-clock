@@ -16,7 +16,7 @@ bot = Bot()
 
 
 @app.route('/')
-def home():
+async def home():
     return jsonify(
         route='home',
         now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -24,7 +24,7 @@ def home():
 
 
 @app.route('/keepalive')
-def keepalive():
+async def keepalive():
     def get_flag(flag_key):
         flag_key = hashlib.md5(flag_key.encode()).hexdigest()
         return f"/tmp/bot-clock-{flag_key}.flag"
@@ -43,7 +43,7 @@ def keepalive():
 
 
 @app.route('/webhook-endpoint', methods=['POST'])
-def webhook_endpoint():
+async def webhook_endpoint():
     bot.send_message(request.data.decode('utf-8'))
     return jsonify(
         route='webhook-endpoint',
